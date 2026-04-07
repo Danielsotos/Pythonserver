@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robots FLR</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+
+    <h1>Robots FLR</h1>
+
+    <img 
+        src="/pictures/producto-Ranger-IL-768x566.jpg" 
+        alt="Robot FLR"
+    >
+
+    <!-- Input -->
+    <input type="text" id="id" placeholder="Ingrese el ID del robot">
+
+    <!-- Botones -->
+    <div>
+        <button onclick="enviarID()">Enviar</button>
+        <button onclick="mostrarLista()">Mostrar Lista</button>
+        <button onclick="volver()">Volver</button>
+    </div>
+    <!-- Resultado -->
+    <div id="resultado"></div>
+    <div id="ultimo-id"></div>
+    <div id="lista-robots" style="margin-top: 20px;"></div>
+    
+    <script src="/static/app.js"></script>
+</body>
+</html>
+
+

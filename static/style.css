@@ -1,0 +1,65 @@
+/* Archivo CSS para estilos de las páginas HTML */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #006391;
+    margin: 0;
+    padding: 20px;
+}
+h1 {
+    color: #ffffff;
+}
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+}   
+button {
+    background-color: #ff9100;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}       
+button:hover {
+    background-color: #ff9100;
+}
+
+button:active {
+    background-color: #ff9100(271, 98%, 52%);
+    cursor: pointer;
+}
+
+#lista-robots {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+    display: none;
+}
+
+#lista-robots h3 {
+    color: #006391;
+    margin-top: 0;
+    text-align: center;
+}
+
+#lista-robots ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#lista-robots li {
+    background-color: #f8f8f8;
+    margin: 5px 0;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border-left: 4px solid #ff9100;
+}
+
+#ultimo-id {
+    color: #ffffff;
+    font-weight: bold;
+    margin-top: 10px;
+}   
