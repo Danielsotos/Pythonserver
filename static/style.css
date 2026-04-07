@@ -1,36 +1,102 @@
-/* Archivo CSS para estilos de las páginas HTML */
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #006391;
-    margin: 0;
-    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: radial-gradient(circle at top left, #1e3c72, #98562a);
+    margin: 70px;
+    color: white;
 }
+
 h1 {
     color: #ffffff;
 }
 img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 20px auto;
-}   
-button {
-    background-color: #ff9100;
-    color: white;
-    padding: 10px 20px;
+    max-width: 50%;  
+    height: auto;  
+    display: left; 
+    margin: 20px auto; 
+    border-radius: 40px; 
+}  
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.main-card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.input-group {
+    text-align: center;
+}
+
+input {
+    padding: 20px; 
+    width: 48%;
+    border-radius: 20px;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}       
-button:hover {
-    background-color: #ff9100;
+    outline: none;
+    margin-bottom: 10px;
 }
 
-button:active {
-    background-color: #ff9100(271, 98%, 52%);
+ button {
+    margin: 5px; 
+    padding: 12px 20px; 
+    border: none; 
+    border-radius: 8px;
     cursor: pointer;
+    background: linear-gradient(135deg, #ff7c02, #ff9800);
+    color: white;
+    font-weight: bold;
+    transition: all 0.25s ease;
 }
 
+/* Hover elegante */
+ button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #ff6a00, #ff9100);
+    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.5);
+}
+
+ /* Click */
+ button:active {
+    transform: scale(0.98);
+    box-shadow: none;
+}
+
+
+button.secondary {
+    background: #2196f3;
+}
+
+button.danger {
+    background: #f44336;
+}
+
+.badge {
+    margin-top: 10px;
+    background: #00c853;
+    padding: 8px;
+    border-radius: 8px;
+    display: inline-block;
+}
+ Estilos para la sección de resultados 
 #lista-robots {
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
@@ -40,9 +106,9 @@ button:active {
 }
 
 #lista-robots h3 {
-    color: #006391;
+    color: #ffffff;
     margin-top: 0;
-    text-align: center;
+    text-align: left;
 }
 
 #lista-robots ul {
@@ -51,7 +117,7 @@ button:active {
 }
 
 #lista-robots li {
-    background-color: #f8f8f8;
+    background-color: #5603f0;
     margin: 5px 0;
     padding: 8px 12px;
     border-radius: 4px;
@@ -63,3 +129,16 @@ button:active {
     font-weight: bold;
     margin-top: 10px;
 }   
+ #lista-robots div {
+    background: white;
+    color: black;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: 0.2s;
+}
+
+#lista-robots div:hover {
+    transform: translateX(5px);
+} 
+
