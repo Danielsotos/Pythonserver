@@ -1,14 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <link rel="stylesheet" href="/static/style.css"> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <img src="/pictures/graficas-sistemo-enjoy-tomorrow-today.png" alt="Sistemo logo" class="logo">
+    <title>Robots</title>
+    <link rel="stylesheet" href="/static/style.css"> 
 </head>
+
 <body>
+
+    <!-- Logo -->
+    <img src="/pictures/graficas-sistemo-enjoy-tomorrow-today.png" alt="Sistemo logo" class="logo">
+
     <h1>Robots</h1>
-    <button onclick="window.location.href='/FLR'">FLR</button>
-    <button onclick="window.location.href='/SBS'">SBS</button>
+
+    <!-- Botones simples -->
+    <button onclick="location.href='/FLR'">FLR</button>
+    <button onclick="location.href='/SBS'">SBS</button>
+
+    <!-- Botón PRO -->
+    <div class="button-container">
+
+        <button class="real-button" onclick="location.href='/FLR'"></button>
+
+        <div class="button-border">
+            <div class="button">FLR</div>
+        </div>
+
+        <div class="spin spin-blur"></div>
+        <div class="spin spin-intense"></div>
+        <div class="spin spin-inside"></div>
+
+        <div class="backdrop"></div>
+
+    </div>
+
+    <!-- SVG filtros -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <filter id="unopaq">
+            <feColorMatrix type="luminanceToAlpha"/>
+        </filter>
+        <filter id="unopaq2">
+            <feColorMatrix type="luminanceToAlpha"/>
+        </filter>
+        <filter id="unopaq3">
+            <feColorMatrix type="luminanceToAlpha"/>
+        </filter>
+    </svg>
+
 </body>
 </html>
