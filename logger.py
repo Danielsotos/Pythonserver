@@ -1,7 +1,7 @@
 import logging
 
 #logging.getLogger("uvicorn.access").disabled = True # Desactiva los logs de acceso de Uvicorn para evitar que se mezclen con los logs personalizados de la aplicación, lo que ayuda a mantener los registros más limpios y enfocados en las operaciones específicas de la API de robots.
-logging.getLogger("uvicorn.access").setLevel(logging.ERROR) # Configura el nivel de logueo para los logs de acceso de Uvicorn a ERROR, lo que significa que solo se registrarán los errores graves relacionados con las solicitudes HTTP, mientras que los mensajes informativos y de depuración no se mostrarán en los logs de acceso. Esto ayuda a reducir el ruido en los registros y a centrarse en los problemas importantes.
+#logging.getLogger("uvicorn.access").setLevel(logging.ERROR) # Configura el nivel de logueo para los logs de acceso de Uvicorn a ERROR, lo que significa que solo se registrarán los errores graves relacionados con las solicitudes HTTP, mientras que los mensajes informativos y de depuración no se mostrarán en los logs de acceso. Esto ayuda a reducir el ruido en los registros y a centrarse en los problemas importantes.
 
 logger = logging.getLogger("robot_api") # Crea un logger específico para la API de robots, lo que permite registrar mensajes relacionados con las operaciones de la API de manera organizada y diferenciada de otros loggers en la aplicación
 logger.setLevel(logging.DEBUG) # Configura el nivel de logueo a DEBUG para registrar mensajes detallados para depuración
