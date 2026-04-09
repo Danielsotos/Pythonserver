@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Entorno virtual
 .venv/
 venv/
@@ -15,10 +16,40 @@ logs.log
 logs/
 
 # IDE y editor
+=======
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+celerybeat-schedule
+instance/
+.pyre/
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+env/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Docker
+*.log
+docker-compose.override.yml
+.env
+
+# IDEs and editors
+>>>>>>> ba9b2dd464b2fdd6c71e5b230042b27fe535e9b4
 .vscode/
 .idea/
 *.swp
 *.swo
+<<<<<<< HEAD
 *~
 
 # Sistema operativo
@@ -29,3 +60,16 @@ Thumbs.db
 *.tmp
 *.temp
 .DS_Store
+=======
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs.log
+*.log
+
+# Data files
+data/*.json
+>>>>>>> ba9b2dd464b2fdd6c71e5b230042b27fe535e9b4
