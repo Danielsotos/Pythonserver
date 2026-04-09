@@ -17,7 +17,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/pictures", StaticFiles(directory="pictures"), name="pictures")
 
 # Instancia el administrador de datos y el router de la API
-data_manager = RobotDataManager("data/datos.json")
+data_manager = RobotDataManager(db_path="data/robots.db", legacy_file_path="data/datos.json")
 robot_api = RobotAPI(data_manager)
 app.include_router(robot_api.router)
 
