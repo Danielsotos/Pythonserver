@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 
+from logger import logger
 from clases import RobotDataManager
 from controladores import RobotAPI
 

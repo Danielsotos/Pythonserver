@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from clases import RobotDataManager
 from logger import logger
 
-class RobotRequest(BaseModel):
+class RobotRequest(BaseModel): # 
     id: str
 
 class RobotAPI:

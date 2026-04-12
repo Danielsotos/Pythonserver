@@ -2,21 +2,18 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-from sqlalchemy import DateTime, Integer, String, create_engine, select
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+from sqlalchemy import Column, Integer, String, DateTime, create_engine, select # columnas para la tabla, tipos de datos
+from sqlalchemy.orm import declarative_base, sessionmaker # para definir la clase que representa la tabla en la base de datos
 
+Base = declarative_base() # clase base para definir las tablas de la base de datos
 
-class Base(DeclarativeBase):
-    pass
+class RobotRegistro(Base): # clase que representa la tabla "robots" en la base de datos
+    __tablename__ = "robots" # nombre de la tabla en la base de datos
 
-
-class RobotRegistro(Base):
-    __tablename__ = "robots"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    section: Mapped[str] = mapped_column(String(100), index=True)
-    robot_id: Mapped[str] = mapped_column(String(255))
-    timestamp: Mapped[datetime] = mapped_column(DateTime)
+    id = Column(Integer, primary_key=True, autoincrement=True) # columna "id" que es la clave primaria y se autoincrementa
+    section = Column(String) # columna "section" que almacena la sección a la que pertenece el robot
+    robot_id = Column(String) # columna "robot_id" que almacena el ID del robot
+    timestamp = Column(DateTime) # columna "timestamp" que almacena la fecha y hora del registro
 
 
 class Robot:
@@ -24,7 +21,7 @@ class Robot:
         self.id = id
         self.timestamp = timestamp
 
-    @classmethod
+    @classmethod     
     def create(cls, id):
         return cls(id, datetime.now())
 
