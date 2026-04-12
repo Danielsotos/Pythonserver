@@ -1,122 +1,133 @@
-import json
 from datetime import datetime
 from pathlib import Path
+from sqlalchemy import Column, Integer, String, DateTime, create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
-from sqlalchemy import Column, Integer, String, DateTime, create_engine, select # columnas para la tabla, tipos de datos
-from sqlalchemy.orm import declarative_base, sessionmaker # para definir la clase que representa la tabla en la base de datos
-
-Base = declarative_base() # clase base para definir las tablas de la base de datos
-
-class RobotRegistro(Base): # clase que representa la tabla "robots" en la base de datos
-    __tablename__ = "robots" # nombre de la tabla en la base de datos
-
-    id = Column(Integer, primary_key=True, autoincrement=True) # columna "id" que es la clave primaria y se autoincrementa
-    section = Column(String) # columna "section" que almacena la sección a la que pertenece el robot
-    robot_id = Column(String) # columna "robot_id" que almacena el ID del robot
-    timestamp = Column(DateTime) # columna "timestamp" que almacena la fecha y hora del registro
+# PASO 1: Crear la base para los modelos
+Base = declarative_base()
 
 
-class Robot:
-    def __init__(self, id, timestamp):
-        self.id = id
-        self.timestamp = timestamp
-
-    @classmethod     
-    def create(cls, id):
-        return cls(id, datetime.now())
-
-    def to_dict(self):
-        return {"id": self.id, "timestamp": self.timestamp.isoformat()}
+# PASO 2: Definir el modelo de la tabla
+class RobotRegistro(Base):
+    __tablename__ = "robots"
+    
+    id = Column(Integer, primary_key=True)
+    section = Column(String)  # Sección: "robotsFLR" o "robotsSBS"
+    robot_id = Column(String)  # ID del robot
+    timestamp = Column(DateTime)  # Fecha y hora
 
 
+# PASO 3: Gestor de la base de datos
 class RobotDataManager:
-    def __init__(self, db_path="data/robots.db", legacy_file_path="data/datos.json"):
-        self.db_path = Path(db_path)
-        self.legacy_file_path = Path(legacy_file_path)
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
-
-        self.engine = create_engine(f"sqlite:///{self.db_path}", future=True)
-        self.session_factory = sessionmaker(bind=self.engine, future=True)
-
+    def __init__(self, db_path="data/robots.db"):
+        # Crear carpeta si no existe
+        db_file = Path(db_path)
+        db_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        # PASO 4: Conectar con la base de datos
+        self.engine = create_engine(f"sqlite:///{db_path}")
+        
+        # PASO 5: Crear las tablas
         Base.metadata.create_all(self.engine)
-        self._migrate_legacy_json()
-
-    def _read_legacy_data(self):
-        if not self.legacy_file_path.exists():
-            return {}
-
-        with self.legacy_file_path.open("r", encoding="utf-8") as file:
-            data = json.load(file)
-
-        return data if isinstance(data, dict) else {}
-
-    def _migrate_legacy_json(self):
-        legacy_data = self._read_legacy_data()
-        sections = {
-            section: items
-            for section, items in legacy_data.items()
-            if isinstance(items, list)
-        }
-        if not sections:
-            return
-
-        with self.session_factory() as session:
-            existing = session.scalar(select(RobotRegistro.id).limit(1))
-            if existing is not None:
-                return
-
-            for section, items in sections.items():
-                for item in items:
-                    if not isinstance(item, dict) or "id" not in item:
-                        continue
-
-                    raw_timestamp = item.get("timestamp")
-                    try:
-                        timestamp = (
-                            datetime.fromisoformat(raw_timestamp)
-                            if raw_timestamp
-                            else datetime.now()
-                        )
-                    except ValueError:
-                        timestamp = datetime.now()
-
-                    session.add(
-                        RobotRegistro(
-                            section=section,
-                            robot_id=str(item["id"]),
-                            timestamp=timestamp,
-                        )
-                    )
-
-            session.commit()
-
-    def get_all(self):
-        data = {}
-        with self.session_factory() as session:
-            stmt = select(RobotRegistro).order_by(RobotRegistro.id.asc())
-            registros = session.scalars(stmt).all()
-
-        for registro in registros:
-            data.setdefault(registro.section, []).append(
-                {
-                    "id": registro.robot_id,
-                    "timestamp": registro.timestamp.isoformat(),
-                }
-            )
-
-        return data
-
+        
+        # PASO 6: Crear el generador de sesiones
+        self.Session = sessionmaker(bind=self.engine)
+    
+    # ========== CREAR UN ROBOT ==========
     def add_robot(self, section, robot_id):
-        nuevo_robot = Robot.create(robot_id)
-
-        with self.session_factory() as session:
-            session.add(
-                RobotRegistro(
-                    section=section,
-                    robot_id=nuevo_robot.id,
-                    timestamp=nuevo_robot.timestamp,
-                )
-            )
+        """Añade un nuevo robot a la base de datos"""
+        
+        session = self.Session()
+        
+        # Crear un nuevo registro
+        nuevo_robot = RobotRegistro(
+            section=section,
+            robot_id=robot_id,
+            timestamp=datetime.now()
+        )
+        
+        # Guardar
+        session.add(nuevo_robot)
+        session.commit()
+        session.close()
+        
+        return nuevo_robot.id
+    
+    # ========== OBTENER TODOS LOS ROBOTS ==========
+    def get_all(self):
+        """Obtiene todos los robots organizados por sección"""
+        
+        session = self.Session()
+        
+        # Buscar todos los robots
+        robots = session.query(RobotRegistro).all()
+        
+        # Organizar por sección
+        datos = {}
+        for robot in robots:
+            # Si la sección no existe, crearla
+            if robot.section not in datos:
+                datos[robot.section] = []
+            
+            # Añadir el robot a su sección
+            datos[robot.section].append({
+                "id": robot.robot_id,
+                "timestamp": str(robot.timestamp)
+            })
+        
+        session.close()
+        
+        return datos
+    
+    # ========== BUSCAR UN ROBOT ==========
+    def get_robot(self, robot_id):
+        """Busca un robot por su ID"""
+        
+        session = self.Session()
+        
+        robot = session.query(RobotRegistro).filter_by(robot_id=robot_id).first()
+        
+        session.close()
+        
+        if robot:
+            return {
+                "id": robot.robot_id,
+                "section": robot.section,
+                "timestamp": str(robot.timestamp)
+            }
+        else:
+            return None
+    
+    # ========== ACTUALIZAR UN ROBOT ==========
+    def update_robot(self, robot_id):
+        """Actualiza el timestamp de un robot"""
+        
+        session = self.Session()
+        
+        robot = session.query(RobotRegistro).filter_by(robot_id=robot_id).first()
+        
+        if robot:
+            robot.timestamp = datetime.now()
             session.commit()
-
-        return nuevo_robot.to_dict()
+            session.close()
+            return True
+        else:
+            session.close()
+            return False
+    
+    # ========== ELIMINAR UN ROBOT ==========
+    def delete_robot(self, robot_id):
+        """Elimina un robot"""
+        
+        session = self.Session()
+        
+        robot = session.query(RobotRegistro).filter_by(robot_id=robot_id).first()
+        
+        if robot:
+            session.delete(robot)
+            session.commit()
+            session.close()
+            return True
+        else:
+            session.close()
+            return False
