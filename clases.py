@@ -49,9 +49,13 @@ class RobotDataManager:
         # Guardar
         session.add(nuevo_robot)
         session.commit()
+        
+        # Obtener el ID antes de cerrar la sesión
+        robot_id_guardado = nuevo_robot.id
+        
         session.close()
         
-        return nuevo_robot.id
+        return robot_id_guardado
     
     # ========== OBTENER TODOS LOS ROBOTS ==========
     def get_all(self):
