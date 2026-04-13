@@ -3,50 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robots</title>
-    <link rel="stylesheet" href="/static/style.css"> 
+    <title>Sistema de Gestión de Robots</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <header class="text-center mb-12">
+            <div class="logo-container mb-6">
+                <img src="/pictures/graficas-sistemo-enjoy-tomorrow-today.png"
+                     alt="Sistemo logo"
+                     class="logo mx-auto">
+            </div>
+            <h1 class="text-5xl font-bold text-white mb-4 tracking-wide">
+                <i class="fas fa-robot text-orange-400 mr-3"></i>
+                Sistema de Robots
+            </h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                Gestión inteligente de robots FLR y SBS con interfaz moderna y eficiente
+            </p>
+        </header>
 
-<body>
+        <!-- Main Content -->
+        <main class="max-w-4xl mx-auto">
+            <!-- Navigation Cards -->
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- FLR Card -->
+                <div class="robot-card group">
+                    <div class="card-header">
+                        <i class="fas fa-cogs text-3xl text-blue-400"></i>
+                        <h3 class="text-2xl font-semibold text-white">Sistema FLR</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Gestión avanzada de robots FLR con monitoreo en tiempo real
+                    </p>
+                    <button onclick="window.location.href='/FLR'"
+                            class="btn-primary group-hover:scale-105 transition-transform duration-300">
+                        <i class="fas fa-arrow-right mr-2"></i>
+                        Acceder FLR
+                    </button>
+                </div>
 
-    <!-- Logo -->
-    <img src="/pictures/graficas-sistemo-enjoy-tomorrow-today.png" alt="Sistemo logo" class="logo">
+                <!-- SBS Card -->
+                <div class="robot-card group">
+                    <div class="card-header">
+                        <i class="fas fa-network-wired text-3xl text-green-400"></i>
+                        <h3 class="text-2xl font-semibold text-white">Sistema SBS</h3>
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                        Control inteligente de robots SBS con análisis predictivo
+                    </p>
+                    <button onclick="window.location.href='/SBS'"
+                            class="btn-primary group-hover:scale-105 transition-transform duration-300">
+                        <i class="fas fa-arrow-right mr-2"></i>
+                        Acceder SBS
+                    </button>
+                </div>
+            </div>
 
-    <h1>Robots</h1>
+            <!-- Stats Section -->
+            <div class="stats-card">
+                <h3 class="text-2xl font-semibold text-white mb-6 text-center">
+                    <i class="fas fa-chart-line text-purple-400 mr-2"></i>
+                    Estadísticas del Sistema
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-robots">0</div>
+                        <div class="stat-label">Total Robots</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="flr-robots">0</div>
+                        <div class="stat-label">Robots FLR</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="sbs-robots">0</div>
+                        <div class="stat-label">Robots SBS</div>
+                    </div>
+                </div>
+            </div>
+        </main>
 
-    <!-- Botones simples -->
-    <button onclick="location.href='/FLR'">FLR</button>
-    <button onclick="location.href='/SBS'">SBS</button>
-
-    <!-- Botón PRO -->
-    <div class="button-container">
-
-        <button class="real-button" onclick="location.href='/FLR'"></button>
-
-        <div class="button-border">
-            <div class="button">FLR</div>
-        </div>
-
-        <div class="spin spin-blur"></div>
-        <div class="spin spin-intense"></div>
-        <div class="spin spin-inside"></div>
-
-        <div class="backdrop"></div>
-
+        <!-- Footer -->
+        <footer class="text-center mt-16 text-gray-400">
+            <p>&copy; 2026 Sistemo - Sistema de Gestión de Robots</p>
+        </footer>
     </div>
 
-    <!-- SVG filtros -->
-    <svg style="position: absolute; width: 0; height: 0;">
-        <filter id="unopaq">
-            <feColorMatrix type="luminanceToAlpha"/>
-        </filter>
-        <filter id="unopaq2">
-            <feColorMatrix type="luminanceToAlpha"/>
-        </filter>
-        <filter id="unopaq3">
-            <feColorMatrix type="luminanceToAlpha"/>
-        </filter>
-    </svg>
+    <script>
+        // Cargar estadísticas al cargar la página
+        async function loadStats() {
+            try {
+                const response = await fetch('/datos');
+                const data = await response.json();
 
+                const flrCount = data.robotsFLR ? data.robotsFLR.length : 0;
+                const sbsCount = data.robotsSBS ? data.robotsSBS.length : 0;
+                const totalCount = flrCount + sbsCount;
+
+                document.getElementById('total-robots').textContent = totalCount;
+                document.getElementById('flr-robots').textContent = flrCount;
+                document.getElementById('sbs-robots').textContent = sbsCount;
+            } catch (error) {
+                console.error('Error cargando estadísticas:', error);
+            }
+        }
+
+        // Cargar estadísticas cuando la página se carga
+        document.addEventListener('DOMContentLoaded', loadStats);
+    </script>
+</body>
+</html>
+
+=======
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-orange-900 to-blue-900 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <header class="text-center mb-12">
+            <div class="logo-container mb-6">
+                <img src="/pictures/graficas-sistemo-enjoy-tomorrow-today.png"
+                     alt="Sistemo logo"
+                     class="logo mx-auto">
+            </div>
+            <h1 class="text-5xl font-bold text-white mb-4 tracking-wide">
+                <i class="fas fa-robot text-gray-400 mr-3"></i>
+            </h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+            </p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-4xl mx-auto">
+            <!-- Navigation Cards -->
+            <div class="grid md:grid-cols-2 gap-8 mb-12"> 
+                <!-- FLR Card -->
+                <div class="robot-card group">
+                    <div class="card-header">
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                    </p>
+                    <button onclick="window.location.href='/FLR'"
+                            class="btn-primary group-hover:scale-105 transition-transform duration-300">
+                        <i class="fas fa-arrow-right mr-2"></i>
+                       FLR
+                    </button>
+                </div>
+
+                <!-- SBS Card -->
+                <div class="robot-card group">
+                    <div class="card-header">
+                    </div>
+                    <p class="text-gray-300 mb-6">
+                    </p>
+                    <button onclick="window.location.href='/SBS'"
+                            class="btn-primary group-hover:scale-105 transition-transform duration-300">
+                        <i class="fas fa-arrow-right mr-2"></i>
+                        Acceder SBS
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="stats-card">
+                <h3 class="text-2xl font-semibold text-white mb-6 text-center">
+                    <i class="fas fa-chart-line text-purple-400 mr-2"></i>
+                    Estadísticas del Sistema
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-robots">0</div>
+                        <div class="stat-label">Total Robots</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="flr-robots">0</div>
+                        <div class="stat-label">Robots FLR</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="sbs-robots">0</div>
+                        <div class="stat-label">Robots SBS</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-16 text-gray-400">
+            <p>&copy; 2026 Sistemo - Sistema de Gestión de Robots</p>
+        </footer>
+    </div>
+
+    <script>
+        // Cargar estadísticas al cargar la página
+        async function loadStats() {
+            try {
+                const response = await fetch('/datos');
+                const data = await response.json();
+
+                const flrCount = data.robotsFLR ? data.robotsFLR.length : 0;
+                const sbsCount = data.robotsSBS ? data.robotsSBS.length : 0;
+                const totalCount = flrCount + sbsCount;
+
+                document.getElementById('total-robots').textContent = totalCount;
+                document.getElementById('flr-robots').textContent = flrCount;
+                document.getElementById('sbs-robots').textContent = sbsCount;
+            } catch (error) {
+                console.error('Error cargando estadísticas:', error);
+            }
+        }
+
+        // Cargar estadísticas cuando la página se carga
+        document.addEventListener('DOMContentLoaded', loadStats);
+    </script>
+>>>>>>> main
 </body>
 </html>
