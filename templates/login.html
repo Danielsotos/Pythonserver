@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingreso de usuarios</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="login-page">
+    <main class="login-shell">
+        <section class="login-panel">
+            <h1>Login</h1>
+            <label for="username">Usuario</label>
+            <input type="text" id="username" placeholder="Ingresa tu usuario">
+
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" placeholder="Ingresa tu contraseña">
+
+            <div class="hero-actions">
+                <button onclick="login()">Ingresar</button>
+                <button onclick="registerUser()">Registrarse</button>
+            </div>
+
+            <p id="auth-message" class="auth-message"></p>
+        </section>
+    </main>
+    <script src="/static/auth.js"></script>
+</body>
+</html>

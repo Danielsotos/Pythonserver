@@ -1,14 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <link rel="stylesheet" href="/static/style.css"> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <img src="/pictures/graficas-sistemo-enjoy-tomorrow-today.png" alt="Sistemo logo" class="logo">
+    <title>Panel de Robots</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
-    <h1>Robots</h1>
-    <button onclick="window.location.href='/FLR'">FLR</button>
-    <button onclick="window.location.href='/SBS'">SBS</button>
+<body class="dashboard-page">
+    <main class="dashboard-shell">
+        <section class="hero-card">
+            <img src="/pictures/graficas-sistemo-enjoy-tomorrow-today.png" alt="Sistemo logo" class="hero-logo">
+            <div class="hero-actions">
+                <button onclick="window.location.href='/FLR'">Robots FLR</button>
+                <button onclick="window.location.href='/SBS'">Robots SBS</button>
+            </div>
+            <button class="link-button" onclick="logout()">Cerrar sesión</button>
+        </section>
+    </main>
+    <script src="/static/app.js"></script>
 </body>
 </html>

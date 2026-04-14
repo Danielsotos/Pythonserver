@@ -1,21 +1,153 @@
-
 body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: radial-gradient(circle at top left, #1e3c72, #98562a);
-    margin: 70px;
-    color: white;
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    color: #f4efe8;
+    background:
+        radial-gradient(circle at top left, rgba(255, 146, 43, 0.28), transparent 32%),
+        radial-gradient(circle at top right, rgba(74, 145, 255, 0.20), transparent 28%),
+        linear-gradient(135deg, #122033 0%, #203a43 55%, #4b2e1f 100%);
+}
+
+.login-page,
+.dashboard-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+}
+
+.login-shell,
+.dashboard-shell {
+    width: 100%;
+    max-width: 960px;
+}
+
+.login-panel,
+.hero-card,
+.robot-card {
+    background: rgba(10, 15, 22, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(10px);
+}
+
+.login-panel,
+.hero-card {
+    padding: 40px;
+}
+
+.hero-card {
+    text-align: center;
+}
+
+.hero-logo {
+    width: min(260px, 70%);
+    height: auto;
+    margin-bottom: 16px;
+    border-radius: 20px;
+}
+
+.eyebrow {
+    margin: 0 0 8px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: #ffb25d;
 }
 
 h1 {
-    color: #ffffff;
+    margin: 0 0 12px;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 1.05;
 }
+
+.hero-copy {
+    margin: 0 auto 24px;
+    max-width: 640px;
+    color: #dbe8f0;
+    line-height: 1.6;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+button,
+.link-button {
+    border: none;
+    border-radius: 999px;
+    padding: 12px 22px;
+    background: linear-gradient(135deg, #ff8c32, #f2b53d);
+    color: #132234;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:hover,
+.link-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(242, 181, 61, 0.28);
+}
+
+.link-button {
+    margin-top: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f4efe8;
+}
+
+label {
+    display: block;
+    margin: 16px 0 8px;
+    color: #f2d1b0;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    outline: none;
+}
+
+input::placeholder {
+    color: #b7c6d4;
+}
+
+.auth-message,
+.session-badge,
+#ultimo-id,
+#resultado {
+    margin-top: 16px;
+    font-weight: 600;
+}
+
+.session-badge {
+    color: #ffcf8d;
+}
+
 img {
-    max-width: 50%;  
-    height: auto;  
-    display: left; 
-    margin: 20px auto; 
-    border-radius: 40px; 
-}  
+    max-width: 50%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border-radius: 24px;
+}
+
 .container {
     max-width: 900px;
     margin: auto;
@@ -27,79 +159,14 @@ header {
     margin-bottom: 20px;
 }
 
-.card {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
+.robot-card {
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 
-.main-card img {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
-.input-group {
-    text-align: center;
-}
-
-input {
-    padding: 20px; 
-    width: 48%;
-    border-radius: 20px;
-    border: none;
-    outline: none;
-    margin-bottom: 10px;
-}
-
- button {
-    margin: 5px; 
-    padding: 12px 20px; 
-    border: none; 
-    border-radius: 8px;
-    cursor: pointer;
-    background: linear-gradient(135deg, #ff7c02, #ff9800);
-    color: white;
-    font-weight: bold;
-    transition: all 0.25s ease;
-}
-
-/* Hover elegante */
- button:hover {
-    transform: scale(1.05);
-    background: linear-gradient(135deg, #ff6a00, #ff9100);
-    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.5);
-}
-
- /* Click */
- button:active {
-    transform: scale(0.98);
-    box-shadow: none;
-}
-
-
-button.secondary {
-    background: #2196f3;
-}
-
-button.danger {
-    background: #f44336;
-}
-
-.badge {
-    margin-top: 10px;
-    background: #00c853;
-    padding: 8px;
-    border-radius: 8px;
-    display: inline-block;
-}
- Estilos para la sección de resultados 
 #lista-robots {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
     padding: 15px;
     margin-top: 20px;
     display: none;
@@ -117,28 +184,26 @@ button.danger {
 }
 
 #lista-robots li {
-    background-color: #5603f0;
-    margin: 5px 0;
-    padding: 8px 12px;
-    border-radius: 4px;
+    background-color: rgba(34, 48, 77, 0.9);
+    margin: 8px 0;
+    padding: 12px 14px;
+    border-radius: 12px;
     border-left: 4px solid #ff9100;
+    line-height: 1.5;
 }
 
-#ultimo-id {
-    color: #ffffff;
-    font-weight: bold;
-    margin-top: 10px;
-}   
- #lista-robots div {
-    background: white;
-    color: black;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    transition: 0.2s;
+@media (max-width: 640px) {
+    .login-page,
+    .dashboard-page {
+        padding: 18px;
+    }
+
+    .login-panel,
+    .hero-card {
+        padding: 24px;
+    }
+
+    img {
+        max-width: 100%;
+    }
 }
-
-#lista-robots div:hover {
-    transform: translateX(5px);
-} 
-

@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.sessions import SessionMiddleware
 import uvicorn
+import os
 
 from logger import logger
 from clases import RobotDataManager
@@ -11,6 +13,12 @@ app = FastAPI(
     title="API de Robots",
     description="Servidor web con FastAPI para gestionar robots",
     version="1.0.0",
+)
+
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=os.getenv("SESSION_SECRET", "robot-secret-dev"),
+    same_site="lax",
 )
 
 # Servir archivos estáticos (CSS, JS, imágenes)

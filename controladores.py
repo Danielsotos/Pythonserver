@@ -1,70 +1,162 @@
-from fastapi import APIRouter # Importamos APIRouter para organizar nuestras rutas
-from fastapi.responses import FileResponse, JSONResponse # Importamos FileResponse para servir archivos HTML y JSONResponse para respuestas JSON
-from pydantic import BaseModel # Importamos BaseModel para definir modelos de datos de entrada
-from fastapi import HTTPException  # Importamos HTTPException para manejar errores HTTP
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
+from pydantic import BaseModel
 
-from clases import RobotDataManager # Importamos la clase RobotDataManager para manejar la lógica de datos
-from logger import logger # Importamos el logger para registrar eventos y errores
+from clases import RobotDataManager
+from logger import logger
 
 
-# Modelo de entrada
-class RobotRequest(BaseModel): # Definimos un modelo de datos para las solicitudes POST, con un campo "id" que es una cadena
+class RobotRequest(BaseModel):
     id: str
+    comment: str = ""
 
 
-class RobotAPI: # Definimos la clase RobotAPI que manejará las rutas de nuestra API
-    def __init__(self, data_manager: RobotDataManager): # El constructor recibe una instancia de RobotDataManager para manejar la lógica de datos
-        self.data_manager = data_manager  # Guardamos la instancia de RobotDataManager en un atributo de la clase
-        self.router = APIRouter() # Creamos una instancia de APIRouter para organizar nuestras rutas
-        self.config_routes()# Llamamos al método _setup_routes para definir las rutas de la API
+class AuthRequest(BaseModel):
+    username: str
+    password: str
+
+
+class RobotAPI:
+    def __init__(self, data_manager: RobotDataManager):
+        self.data_manager = data_manager
+        self.router = APIRouter()
+        self.config_routes()
+
+    def _get_current_user(self, request: Request):
+        username = request.session.get("username")
+        if not username:
+            raise HTTPException(status_code=401, detail="Sesión no válida")
+        return username
+
+    def _require_page_user(self, request: Request):
+        if not request.session.get("username"):
+            return RedirectResponse(url="/login", status_code=303)
+        return None
 
     def config_routes(self):
+        @self.router.get("/")
+        def root(request: Request):
+            if request.session.get("username"):
+                return RedirectResponse(url="/index", status_code=303)
+            return RedirectResponse(url="/login", status_code=303)
 
-        @self.router.get("/") # Definimos una ruta GET para la raíz ("/") que servirá el archivo index.html
-        def root():
+        @self.router.get("/login")
+        def login_page(request: Request):
+            if request.session.get("username"):
+                return RedirectResponse(url="/index", status_code=303)
+            return FileResponse("templates/login.html")
+
+        @self.router.get("/index")
+        def index(request: Request):
+            redirect = self._require_page_user(request)
+            if redirect:
+                return redirect
             return FileResponse("templates/index.html")
 
         @self.router.get("/FLR")
-        def flr():
+        def flr(request: Request):
+            redirect = self._require_page_user(request)
+            if redirect:
+                return redirect
             return FileResponse("templates/FLR.html")
 
         @self.router.get("/SBS")
-        def sbs():
+        def sbs(request: Request):
+            redirect = self._require_page_user(request)
+            if redirect:
+                return redirect
             return FileResponse("templates/SBS.html")
 
-        @self.router.get("/datos")
-        def datos():
+        @self.router.post("/register")
+        def register(auth: AuthRequest):
+            username = auth.username.strip()
+            password = auth.password.strip()
+
+            if not username or not password:
+                raise HTTPException(status_code=400, detail="Usuario y contraseña son obligatorios")
+
             try:
-                datos = self.data_manager.get_all() # Obtenemos todos los datos utilizando el método get_all de RobotDataManager
-                return JSONResponse(content=datos) # Devolvemos los datos en formato JSON utilizando JSONResponse
-            except ValueError as e: # Si ocurre un error de valor, lo registramos como una advertencia y devolvemos un error HTTP 400 con el mensaje del error
-                logger.warning("Error en /datos: %s", e)
-                raise HTTPException(status_code=400, detail=str(e))
-            
-            except Exception as e: # Si ocurre cualquier otro tipo de error, lo registramos como un error y devolvemos un error HTTP 500 con un mensaje genérico
-                logger.error("Error en /datos: %s", e)
-                raise HTTPException(status_code=500, detail="Error interno del servidor")
+                user = self.data_manager.create_user(username, password)
+                return {"message": "Usuario registrado correctamente", "user": user["username"]}
+            except ValueError as exc:
+                raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+        @self.router.post("/login")
+        def login(auth: AuthRequest, request: Request):
+            username = auth.username.strip()
+            password = auth.password.strip()
+
+            if not username or not password:
+                raise HTTPException(status_code=400, detail="Usuario y contraseña son obligatorios")
+
+            user = self.data_manager.authenticate_user(username, password)
+            if not user:
+                raise HTTPException(status_code=401, detail="Credenciales inválidas")
+
+            request.session["username"] = user["username"]
+            return {"message": "Inicio de sesión correcto", "user": user["username"]}
+
+        @self.router.post("/logout")
+        def logout(request: Request):
+            request.session.clear()
+            return {"message": "Sesión cerrada"}
+
+        @self.router.get("/me")
+        def me(request: Request):
+            username = request.session.get("username")
+            if not username:
+                raise HTTPException(status_code=401, detail="No autenticado")
+            return {"username": username}
+
+        @self.router.get("/health")
+        def health():
+            try:
+                db_ok = self.data_manager.healthcheck()
+                return {"status": "ok", "database": db_ok}
+            except Exception as exc:
+                logger.error("Healthcheck falló: %s", exc)
+                raise HTTPException(status_code=503, detail="Database unavailable") from exc
+
+        @self.router.get("/datos")
+        def datos(request: Request):
+            self._get_current_user(request)
+
+            try:
+                datos = self.data_manager.get_all()
+                return JSONResponse(content=datos)
+            except ValueError as exc:
+                logger.warning("Error en /datos: %s", exc)
+                raise HTTPException(status_code=400, detail=str(exc)) from exc
+            except Exception as exc:
+                logger.error("Error en /datos: %s", exc)
+                raise HTTPException(status_code=500, detail="Error interno del servidor") from exc
 
         @self.router.post("/FLR")
-        def guardar_flr(robot: RobotRequest): # Definimos una ruta POST para "/FLR" que recibe un objeto RobotRequest en el cuerpo de la solicitud
-            logger.info("POST /FLR - robot_id=%s", robot.id) # Registramos un mensaje de información con el ID del robot recibido en la solicitud
+        def guardar_flr(robot: RobotRequest, request: Request):
+            current_user = self._get_current_user(request)
+            logger.info("POST /FLR - robot_id=%s user=%s", robot.id, current_user)
 
-            self.data_manager.add_robot("robotsFLR", robot.id) # Llamamos al método add_robot de RobotDataManager para agregar el ID del robot a la sección "robotsFLR"
+            self.data_manager.add_robot("robotsFLR", robot.id, current_user, robot.comment)
 
             return {
                 "message": "Datos guardados correctamente",
                 "section": "robotsFLR",
-                "id": robot.id
+                "id": robot.id,
+                "comment": robot.comment,
+                "created_by": current_user,
             }
 
-        @self.router.post("/SBS") # Definimos una ruta POST para "/SBS" que recibe un objeto RobotRequest en el cuerpo de la solicitud
-        def guardar_sbs(robot: RobotRequest): # Registramos un mensaje de información con el ID del robot recibido en la solicitud
-            logger.info("POST /SBS - robot_id=%s", robot.id) # Llamamos al método add_robot de RobotDataManager para agregar el ID del robot a la sección "robotsSBS"
+        @self.router.post("/SBS")
+        def guardar_sbs(robot: RobotRequest, request: Request):
+            current_user = self._get_current_user(request)
+            logger.info("POST /SBS - robot_id=%s user=%s", robot.id, current_user)
 
-            self.data_manager.add_robot("robotsSBS", robot.id)
+            self.data_manager.add_robot("robotsSBS", robot.id, current_user, robot.comment)
 
             return {
                 "message": "Datos guardados correctamente",
                 "section": "robotsSBS",
-                "id": robot.id
+                "id": robot.id,
+                "comment": robot.comment,
+                "created_by": current_user,
             }
