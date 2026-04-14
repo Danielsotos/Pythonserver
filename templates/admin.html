@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="dashboard-page">
+    <main class="dashboard-shell">
+        <section class="hero-card">
+            <p id="current-user" class="session-badge"></p>
+            <p class="eyebrow">Administración</p>
+            <h1>Usuarios y roles</h1>
+            <p class="hero-copy">Como administrador puedes crear usuarios, asignar roles y eliminar cuentas.</p>
+
+            <label for="new-username">Nuevo usuario</label>
+            <input type="text" id="new-username" placeholder="usuario">
+
+            <label for="new-password">Contraseña</label>
+            <input type="password" id="new-password" placeholder="contraseña">
+
+            <label for="new-role">Rol</label>
+            <select id="new-role">
+                <option value="operador">operador</option>
+                <option value="tecnico">tecnico</option>
+                <option value="admin">admin</option>
+            </select>
+
+            <div class="hero-actions left-actions">
+                <button onclick="createAdminUser()">Crear usuario</button>
+                <button onclick="window.location.href='/index'">Volver</button>
+            </div>
+
+            <p id="admin-message"></p>
+        </section>
+
+        <section class="robot-card">
+            <h2>Usuarios actuales</h2>
+            <ul id="user-list" class="plain-list"></ul>
+        </section>
+        <button class="link-button" onclick="logout()">Cerrar sesión</button>
+    </main>
+
+    <script src="/static/app.js"></script>
+    <script src="/static/admin.js"></script>
+</body>
+</html>

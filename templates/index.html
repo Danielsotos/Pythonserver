@@ -10,9 +10,15 @@
     <main class="dashboard-shell">
         <section class="hero-card">
             <img src="/pictures/graficas-sistemo-enjoy-tomorrow-today.png" alt="Sistemo logo" class="hero-logo">
+            <p id="current-user" class="session-badge"></p>
+            <p class="eyebrow">Centro de operaciones</p>
+            <h1>Registro e incidencias de robots</h1>
+            <p class="hero-copy">Accede a las líneas FLR y SBS, registra nuevos bots y sigue las fallas por prioridad desde una vista central.</p>
             <div class="hero-actions">
                 <button onclick="window.location.href='/FLR'">Robots FLR</button>
                 <button onclick="window.location.href='/SBS'">Robots SBS</button>
+                <button id="incident-link" hidden onclick="window.location.href='/incidencias'">Incidencias</button>
+                <button id="admin-link" hidden onclick="window.location.href='/admin'">Administración</button>
             </div>
             <button class="link-button" onclick="logout()">Cerrar sesión</button>
         </section>

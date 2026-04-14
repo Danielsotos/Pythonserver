@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incidencias</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="dashboard-page">
+    <main class="dashboard-shell">
+        <section class="hero-card">
+            <p id="current-user" class="session-badge"></p>
+            <p class="eyebrow">Seguimiento técnico</p>
+            <h1>Incidencias de robots</h1>
+            <p id="incident-role-info" class="hero-copy"></p>
+            <div class="hero-actions left-actions">
+                <button onclick="window.location.href='/FLR'">Ir a FLR</button>
+                <button onclick="window.location.href='/SBS'">Ir a SBS</button>
+                <button onclick="window.location.href='/index'">Volver al inicio</button>
+            </div>
+        </section>
+
+        <section id="incident-list" class="incident-grid"></section>
+        <button class="link-button" onclick="logout()">Cerrar sesión</button>
+    </main>
+
+    <script src="/static/app.js"></script>
+    <script src="/static/incidents.js"></script>
+</body>
+</html>
