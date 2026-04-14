@@ -18,7 +18,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/pictures", StaticFiles(directory="pictures"), name="pictures")
 
 # Crear el gestor de datos y la API
-data_manager = RobotDataManager(db_path="data/robots.db")
+data_manager = RobotDataManager()
 robot_api = RobotAPI(data_manager)
 app.include_router(robot_api.router)
 

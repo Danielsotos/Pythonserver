@@ -14,3 +14,5 @@ INFO:     2026-04-13 14:10:28,979 POST /FLR - robot_id=2
 INFO:     2026-04-13 14:10:30,372 POST /FLR - robot_id=2
 INFO:     2026-04-13 14:13:08,791 POST /FLR - robot_id=8
 INFO:     2026-04-13 14:13:14,618 POST /FLR - robot_id=*
+INFO:     2026-04-14 16:07:05,105 POST /FLR - robot_id=454355
+INFO:     2026-04-14 16:09:14,665 POST /SBS - robot_id=2

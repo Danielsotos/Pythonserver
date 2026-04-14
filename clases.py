@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 from pathlib import Path
 from sqlalchemy import Column, Integer, String, DateTime, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
@@ -19,13 +20,11 @@ class RobotRegistro(Base):
 
 # PASO 3: Gestor de la base de datos
 class RobotDataManager:
-    def __init__(self, db_path="data/robots.db"):
-        # Crear carpeta si no existe
-        db_file = Path(db_path)
-        db_file.parent.mkdir(parents=True, exist_ok=True)
-        
+    def __init__(self, db_url=None):
+        default_db_url = "postgresql+psycopg://postgres:postgres@localhost:5432/robotsdb"
+        db_url = db_url or os.getenv("DATABASE_URL", default_db_url)
         # PASO 4: Conectar con la base de datos
-        self.engine = create_engine(f"sqlite:///{db_path}")
+        self.engine = create_engine(db_url)
         
         # PASO 5: Crear las tablas
         Base.metadata.create_all(self.engine)
