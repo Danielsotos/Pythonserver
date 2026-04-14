@@ -1,0 +1,14 @@
+.git
+.gitignore
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.tar
+*.tar.gz
+logs.log
+.env
+
+# Mantener la carpeta data, pero no copiar la base local al build
+data/*.db
