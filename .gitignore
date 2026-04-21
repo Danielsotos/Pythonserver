@@ -45,3 +45,6 @@ data/*.json
 # Ignore tar files
 *.tar.gz    
 *.tar
+
+#logs
+*.logs
